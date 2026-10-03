@@ -5,6 +5,9 @@ on:
     branches: [ main ]
   workflow_dispatch: {}
 
+permissions:
+  contents: write   # needed to publish the APK as a GitHub Release
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,8 +34,22 @@ jobs:
       - name: Build release APK
         run: flutter build apk --release
 
+      - name: Rename APK
+        run: cp build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/bloom-alarm.apk
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: bloom-alarm-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: build/app/outputs/flutter-apk/bloom-alarm.apk
+
+      # Publish to a rolling "latest" release so the APK has a direct,
+      # login-free download link (Actions artifacts need sign-in and are zipped).
+      - name: Publish APK to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Bloom Alarm (latest build)
+          body: "Latest build from ${{ github.sha }}. Download bloom-alarm.apk below and open it on your Android phone to install."
+          make_latest: true
+          files: build/app/outputs/flutter-apk/bloom-alarm.apk

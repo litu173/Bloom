@@ -1,0 +1,51 @@
+name: Deploy Web to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+          channel: 'stable'
+
+      # Same backfill as build-apk.yml, but for the web/ platform folder.
+      - name: Backfill web platform project
+        run: flutter create . --project-name bloom_alarm --platforms=web
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # Pages serves this repo under /Bloom/, so the app's base href must match.
+      - name: Build web
+        run: flutter build web --release --base-href /Bloom/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
