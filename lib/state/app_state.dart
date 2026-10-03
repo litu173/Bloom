@@ -157,7 +157,7 @@ class AppState extends ChangeNotifier {
   Timer? _vibeTimer;
   Future<void> _startVibration() async {
     _vibeTimer?.cancel();
-    if (!(await Vibration.hasVibrator() ?? false)) return;
+    if (await Vibration.hasVibrator() != true) return;
     Vibration.vibrate(pattern: [0, 400, 200, 400]);
     _vibeTimer = Timer.periodic(const Duration(milliseconds: 1500), (_) {
       Vibration.vibrate(pattern: [0, 400, 200, 400]);
