@@ -23,7 +23,7 @@ jobs:
       # needs to build — it only adds missing platform files and never
       # touches lib/ or pubspec.yaml's existing content.
       - name: Backfill native platform projects
-        run: flutter create . --platforms=android,ios
+        run: flutter create . --project-name bloom_alarm --platforms=android,ios
 
       - name: Install dependencies
         run: flutter pub get
