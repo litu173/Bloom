@@ -1,0 +1,38 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+          channel: 'stable'
+
+      # This project was hand-authored without the Flutter SDK (built in a
+      # sandboxed environment with no Flutter/Android SDK access), so it
+      # ships only lib/, assets/, and pubspec.yaml. `flutter create .`
+      # backfills the native android/ + ios/ platform scaffolding Flutter
+      # needs to build — it only adds missing platform files and never
+      # touches lib/ or pubspec.yaml's existing content.
+      - name: Backfill native platform projects
+        run: flutter create . --platforms=android,ios
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build release APK
+        run: flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: bloom-alarm-apk
+          path: build/app/outputs/flutter-apk/app-release.apk

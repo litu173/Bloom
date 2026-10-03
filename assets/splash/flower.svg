@@ -1,0 +1,40 @@
+<svg width="512" height="512" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Bloom — cherry-blossom mark. 5 notched petals around a warm sunrise heart. -->
+  <defs>
+    <path id="petal" d="M0,0
+      C-15,-20 -34,-45 -27,-85
+      C-20,-95 -10,-85 0,-70
+      C10,-85 20,-95 27,-85
+      C34,-45 15,-20 0,0 Z"/>
+    <radialGradient id="petalGradA" cx="50%" cy="88%" r="80%">
+      <stop offset="0%" stop-color="#FDEDF1"/>
+      <stop offset="100%" stop-color="#FF9AB3"/>
+    </radialGradient>
+    <radialGradient id="petalGradB" cx="50%" cy="88%" r="80%">
+      <stop offset="0%" stop-color="#FF9AB3"/>
+      <stop offset="100%" stop-color="#E8637F"/>
+    </radialGradient>
+    <radialGradient id="centerGrad" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#FFE9C2"/>
+      <stop offset="100%" stop-color="#FFC773"/>
+    </radialGradient>
+  </defs>
+  <g transform="translate(100,100)">
+    <g transform="rotate(0)">
+      <use href="#petal" fill="url(#petalGradA)" stroke="#D9536F" stroke-width="1.4" stroke-opacity="0.28"/>
+    </g>
+    <g transform="rotate(72)">
+      <use href="#petal" fill="url(#petalGradB)" stroke="#D9536F" stroke-width="1.4" stroke-opacity="0.28"/>
+    </g>
+    <g transform="rotate(144)">
+      <use href="#petal" fill="url(#petalGradA)" stroke="#D9536F" stroke-width="1.4" stroke-opacity="0.28"/>
+    </g>
+    <g transform="rotate(216)">
+      <use href="#petal" fill="url(#petalGradB)" stroke="#D9536F" stroke-width="1.4" stroke-opacity="0.28"/>
+    </g>
+    <g transform="rotate(288)">
+      <use href="#petal" fill="url(#petalGradA)" stroke="#D9536F" stroke-width="1.4" stroke-opacity="0.28"/>
+    </g>
+    <circle r="15.5" fill="url(#centerGrad)"/>
+  </g>
+</svg>
