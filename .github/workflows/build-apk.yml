@@ -16,7 +16,9 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.0'
+          # Latest stable: older Flutter versions generate an Android project
+          # (AGP 7.x, Kotlin 1.7) too old for current plugins, which need
+          # compileSdk 35 and Kotlin 1.9+.
           channel: 'stable'
 
       # This project was hand-authored without the Flutter SDK (built in a
@@ -27,13 +29,6 @@ jobs:
       # touches lib/ or pubspec.yaml's existing content.
       - name: Backfill native platform projects
         run: flutter create . --project-name bloom_alarm --platforms=android,ios
-
-      # Flutter 3.24's template pins Kotlin 1.7.10, but current plugins
-      # (e.g. shared_preferences_android) ship Kotlin 1.9 metadata.
-      - name: Bump Kotlin Gradle plugin
-        run: |
-          sed -i -E 's/(org\.jetbrains\.kotlin\.android"? version ")[0-9.]+"/\11.9.24"/' android/settings.gradle
-          grep -n kotlin android/settings.gradle
 
       - name: Install dependencies
         run: flutter pub get
